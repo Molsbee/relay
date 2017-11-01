@@ -1,5 +1,6 @@
 package relay.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -8,8 +9,7 @@ import relay.model.Channel;
 import relay.model.User;
 import relay.repository.ChannelRepository;
 
-import java.time.LocalDateTime;
-
+@Slf4j
 @Service
 public class ChannelService {
 
@@ -25,7 +25,21 @@ public class ChannelService {
     }
 
     public void create(String name, User createdBy) {
-        channelRepository.save(new Channel(name, createdBy, LocalDateTime.now()));
+        findByName(name)
+                .defaultIfEmpty(new Channel(name))
+                .map(c -> {
+                    log.info("attempting to save channel {}", c.getName());
+                    return channelRepository.save(c)
+                            .subscribe(
+                                    cn -> log.info("saved channel {}", cn.getName()),
+                                    e -> log.error("error occurred saving channel name {}")
+                            );
+                }).subscribe();
+    }
+
+    public void delete(String name, User requestBy) {
+        findByName(name)
+                .doOnEach(m -> channelRepository.delete(m.get()));
     }
 
 }

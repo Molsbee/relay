@@ -1,14 +1,12 @@
 package relay.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import relay.model.Channel;
 import relay.model.User;
+import relay.model.web.CreateChannelRequest;
 import relay.service.ChannelService;
 
 @RestController
@@ -24,13 +22,18 @@ public class ChannelController {
     }
 
     @GetMapping("/{channelName}")
-    public Mono<Channel> getChannel(String channelName) {
+    public Mono<Channel> getChannel(@PathVariable String channelName) {
         return channelService.findByName(channelName);
     }
 
     @PostMapping
-    public void create(String name) {
-        channelService.create(name, new User());
+    public void create(@RequestBody CreateChannelRequest request) {
+        channelService.create(request.getName(), new User());
+    }
+
+    @DeleteMapping
+    public void delete(String name) {
+        channelService.delete(name, new User());
     }
 
 }
