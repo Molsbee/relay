@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import relay.model.Channel;
-import relay.model.User;
 import relay.model.web.CreateChannelRequest;
 import relay.service.ChannelService;
 
@@ -28,12 +27,13 @@ public class ChannelController {
 
     @PostMapping
     public void create(@RequestBody CreateChannelRequest request) {
-        channelService.create(request.getName(), new User());
+        channelService.create(request.getName());
     }
 
     @DeleteMapping
-    public void delete(String name) {
-        channelService.delete(name, new User());
+    @RequestMapping("/{channelName}")
+    public void delete(@PathVariable String channelName) {
+        channelService.delete(channelName);
     }
 
 }

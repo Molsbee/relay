@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import relay.model.Channel;
-import relay.model.User;
 import relay.repository.ChannelRepository;
 
 @Slf4j
@@ -24,7 +23,7 @@ public class ChannelService {
         return channelRepository.findById(name);
     }
 
-    public void create(String name, User createdBy) {
+    public void create(String name) {
         findByName(name)
                 .defaultIfEmpty(new Channel(name))
                 .map(c -> {
@@ -32,14 +31,16 @@ public class ChannelService {
                     return channelRepository.save(c)
                             .subscribe(
                                     cn -> log.info("saved channel {}", cn.getName()),
-                                    e -> log.error("error occurred saving channel name {}")
+                                    e -> log.error("error occurred saving channel name {}", e)
                             );
                 }).subscribe();
     }
 
-    public void delete(String name, User requestBy) {
+    public void delete(String name) {
         findByName(name)
-                .doOnEach(m -> channelRepository.delete(m.get()));
+                .subscribe(c -> {
+                    channelRepository.delete(c).subscribe();
+                });
     }
 
 }
