@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "message")
-public class Message {
+@Document(collection = "capped_message")
+public class CappedMessage {
 
     @Id
     String id;
@@ -29,14 +29,5 @@ public class Message {
 
     @DBRef
     Channel channel;
-
-    public CappedMessage toCappedMessage() {
-        return CappedMessage.builder()
-                .createdBy(createdBy)
-                .createdAt(createdAt)
-                .message(message)
-                .channel(channel)
-                .build();
-    }
 
 }
