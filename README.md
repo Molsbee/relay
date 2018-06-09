@@ -39,6 +39,9 @@ Message
 }
 ```
 
+## Live Update Javascript
+npm run-script watch
+Still have to copy generated bundle into /target/classes/static/built
 
 ## Requires MongoDB
 
@@ -60,14 +63,3 @@ db (Shows a list of databases)
 use relay
 db.getCollectionNames()
 db.user.find()
-
-# Notes
-```java
-public class Thing {
-
-    @GetMapping("/user")
-    public Mono<User> current(@AuthenticationPrincipal Mono<User> principal) {
-        return principal;
-    }    
-}
-```

@@ -30,7 +30,14 @@ public class SecurityConfig {
     @PostConstruct
     public void populateUser() {
         userRepository.findById("admin")
-                .defaultIfEmpty(User.builder().username("admin").password(passwordEncoder().encode("admin123")).build())
+                .defaultIfEmpty(User.builder()
+                        .username("admin")
+                        .firstName("Root")
+                        .lastName("Administrator")
+                        .password(passwordEncoder()
+                                .encode("admin123")
+                        )
+                        .build())
                 .map(u -> userRepository.save(u).subscribe())
                 .subscribe();
     }
