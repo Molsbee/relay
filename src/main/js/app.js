@@ -15,7 +15,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        restClient({method: 'GET', path: '/users?self=true'}).then(response => {
+        restClient({method: 'GET', path: '/api/users?self=true'}).then(response => {
             this.setState({
                 userDetails: response.entity[0],
             });
@@ -33,9 +33,27 @@ class App extends React.Component {
                 </nav>
                 <main>
                     <Switch>
-                        <Route path={'/'} render={() => <Home userDetails={this.state.userDetails}/>}/>
+                        <Route exact path={'/'} render={() => <Home userDetails={this.state.userDetails}/>}/>
+                        <Route path={'/channels'} render={() => <AddChannel userDetails={this.state.userDetails}/>}/>
                     </Switch>
                 </main>
+            </div>
+        )
+    }
+
+}
+
+class AddChannel extends React.Component {
+
+    constructor(props) {
+        super(props);
+        console.log("AddChannel: " + this.props.userDetails);
+    }
+
+    render() {
+        return (
+            <div>
+                Add Channel
             </div>
         )
     }
@@ -64,7 +82,7 @@ class Home extends React.Component {
             <div className={"row h-100"}>
                 <div className={"col-md-3"} style={{backgroundColor: "#2b6f7a", color: "#f2f2f2", paddingTop: "90px"}}>
                     <div id={"channels"}>
-                        <nav className={"nav flex-column"}>Channels</nav>
+                        <nav className={"nav flex-column"}><Link to={"/channels"}>Channels</Link></nav>
                         <nav className={"nav flex-column"}>{channels}</nav>
                     </div>
                 </div>

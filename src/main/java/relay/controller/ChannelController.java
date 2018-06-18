@@ -9,7 +9,7 @@ import relay.model.web.CreateChannelRequest;
 import relay.service.ChannelService;
 
 @RestController
-@RequestMapping("/channels")
+@RequestMapping("/api/channels")
 public class ChannelController {
 
     @Autowired

@@ -17,7 +17,7 @@ import relay.service.MessageService;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/channels/{channelName}/messages")
+@RequestMapping(value = "/api/channels/{channelName}/messages")
 public class MessageController {
 
     @Autowired

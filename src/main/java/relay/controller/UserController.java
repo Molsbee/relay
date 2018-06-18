@@ -10,7 +10,7 @@ import relay.model.web.UserResponse;
 import relay.service.UserService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
